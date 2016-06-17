@@ -1,17 +1,19 @@
 package com.moonstub.numbernine.Core.Framework;
 
-import android.content.Context;
+import android.content.ContentProvider;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 /**
  * Created by mkline on 6/16/2016.
  */
-public class GameRenderer extends SurfaceView implements Runnable {
+public class GameRendererUi extends SurfaceView implements Runnable {
 
     GameScreen currentScreen;
     Bitmap background;
@@ -21,22 +23,23 @@ public class GameRenderer extends SurfaceView implements Runnable {
     Thread mThread;
     boolean isRunning;
 
-    public GameRenderer(GameActivity gameActivity, GameScreen gameScreen) {
+    public GameRendererUi(GameActivity gameActivity, GameScreen gameScreen) {
         super(gameActivity);
         currentScreen = gameScreen;
         background = GameGraphics.createBitmap(currentScreen.getDimensions());
         foreground = GameGraphics.createBitmap(currentScreen.getDimensions());
 
         mHolder = getHolder();
-
         mHolder.setFormat(PixelFormat.TRANSPARENT);
-
+        setZOrderOnTop(true);
     }
 
     public void start(){
-        isRunning = true;
-        mThread = new Thread(this);
-        mThread.start();
+        if(isRunning != true) {
+            isRunning = true;
+            mThread = new Thread(this);
+            mThread.start();
+        }
     }
 
     public void stop(){
@@ -60,10 +63,10 @@ public class GameRenderer extends SurfaceView implements Runnable {
                 continue;
             }
 
-            //update
-            getCurrentScreen().update();
-            //draw
-            getCurrentScreen().draw();
+            if(getCurrentFragmentScreen() != null) {
+                getCurrentFragmentScreen().update();
+                getCurrentFragmentScreen().draw();
+            }
 
 
             Canvas c = mHolder.lockCanvas();
@@ -85,5 +88,9 @@ public class GameRenderer extends SurfaceView implements Runnable {
 
     public Bitmap getBitmapForeground() {
         return foreground;
+    }
+
+    public GameFragment getCurrentFragmentScreen() {
+        return getCurrentScreen().getCurrentFragment();
     }
 }

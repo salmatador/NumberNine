@@ -1,5 +1,6 @@
 package com.moonstub.numbernine.Core.Framework;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -10,15 +11,16 @@ public class GameActivity extends AppCompatActivity {
     //Declare Classes
 
     GameScreen gameScreen;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        fragmentManager = getSupportFragmentManager();
 
         gameScreen = new GameScreen(this);
 
-        setContentView(gameScreen.getGameRenderer());
+        setContentView(R.layout.activity_game);
 
         gameScreen.getGameRenderer().start();
     }
@@ -39,4 +41,6 @@ public class GameActivity extends AppCompatActivity {
     public GameScreen getGameScreen() {
         return gameScreen;
     }
+
+
 }

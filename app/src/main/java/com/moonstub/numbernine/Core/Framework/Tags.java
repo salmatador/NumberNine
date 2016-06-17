@@ -7,6 +7,5 @@ public class Tags {
     public static final String MENU_MAIN = "menu_main";
     public static final String MENU_OPTIONS = "menu_options";
     public static final String MENU_SCORE = "menu_score";
-
-
+    public static final String GAME_SCREEN = "game_screen";
 }

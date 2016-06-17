@@ -6,7 +6,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.nfc.Tag;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+
+import com.moonstub.numbernine.Core.GameBoardFragment;
+import com.moonstub.numbernine.Core.MainMenuFragment;
+import com.moonstub.numbernine.R;
 
 import java.util.HashMap;
 
@@ -19,19 +25,33 @@ public class GameScreen {
     int step = -1;
 
     GameActivity game;
-    //HashMap<String, GameFragment> gameUiFragments;
+    HashMap<String, GameFragment> gameUiFragments;
     GameRenderer gameRenderer;
+    GameRendererUi gameRendererUi;
+
+    String currentTag;
     //GameBoard gameBoard;
     Point screenDimension = new Point();
+    GameFragment currentFragment;
 
     public GameScreen(GameActivity gameActivity){
         game = gameActivity;
         setDimensions();
         gameRenderer = new GameRenderer(game, this);
+        gameRendererUi = new GameRendererUi(game, this);
         gameRenderer.start();
-        //addFragment(new GameFragment(), "menu_main");
-        //addFragment(new GameFragment(), "menu_options");
-        //addFragment(new GameFragment(), "menu_score");
+        currentTag = Tags.MENU_MAIN;
+        gameRendererUi.start();
+
+        addFragment(new GameBoardFragment(), Tags.GAME_SCREEN);
+        addFragment(new MainMenuFragment(), Tags.MENU_MAIN);
+        addFragment(new GameFragment(), Tags.MENU_OPTIONS);
+        addFragment(new GameFragment(), Tags.MENU_SCORE);
+
+
+        attachFragment(getFragmentId(Tags.GAME_SCREEN), Tags.GAME_SCREEN, R.id.background_ui);
+        attachFragment(getFragmentId(Tags.MENU_MAIN), Tags.MENU_MAIN, R.id.foreground_ui);
+
     }
 
     public void setDimensions(){
@@ -39,28 +59,39 @@ public class GameScreen {
         //Log.d("Screen Size", screenDimension.toString());
     }
 
-    public void switchFragment(String tag) {
+    public void removeFragment(String tag){
+        FragmentTransaction ft = getGame().getSupportFragmentManager().beginTransaction();
+        //ft.remove(gameUiFragments.get(tag));
+        ft.remove(gameUiFragments.get(tag)).commit();
+    }
+
+    public void attachFragment(int id,String tag, int layout){
+        FragmentTransaction ft = getGame().getSupportFragmentManager().beginTransaction();
+        ft.add(layout, gameUiFragments.get(tag)).commit();
+    }
+
+    public int getFragmentId(String tag) {
         switch (tag) {
             case Tags.MENU_MAIN:
-                break;
+                return R.id.main_menu;
             case Tags.MENU_OPTIONS:
-                break;
+                return R.id.options_menu;
             case Tags.MENU_SCORE:
-
+                return R.id.score_menu;
             default:
-                break;
+                return R.id.background_root;
         }
     }
 
-//    public boolean addFragment(GameFragment gameFragment, String tag){
-//        // make sure gameUiFragments has be instantiated
-//        if(gameUiFragments == null){
-//            gameUiFragments = new HashMap<>();
-//        }
-//        //TODO check if fragment exists before adding
-//        gameUiFragments.put(tag, gameFragment);
-//        return true;
-//    }
+    public boolean addFragment(GameFragment gameFragment, String tag){
+        // make sure gameUiFragments has be instantiated
+        if(gameUiFragments == null){
+            gameUiFragments = new HashMap<>();
+        }
+        //TODO check if fragment exists before adding
+        gameUiFragments.put(tag, gameFragment);
+        return true;
+    }
 
     public void draw(){
         Paint p = new Paint();
@@ -95,5 +126,25 @@ public class GameScreen {
 
     public GameRenderer getGameRenderer() {
         return gameRenderer;
+    }
+
+    public GameRendererUi getUiRenderer() {
+        return gameRendererUi;
+    }
+
+    public GameFragment getFragmentByTag(String tag){
+        return gameUiFragments.get(tag);
+    }
+
+    public GameFragment getCurrentFragment() {
+        return gameUiFragments.get(currentTag);
+    }
+
+    public String getCurrentTag() {
+        return currentTag;
+    }
+
+    public void setCurrentTag(String currentTag) {
+        this.currentTag = currentTag;
     }
 }

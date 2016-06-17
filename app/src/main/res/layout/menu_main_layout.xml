@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main_menu"
+    android:background="#00ffffff">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Main Menu Test Button"
+        android:id="@+id/menu_main_test_btn"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="186dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <FrameLayout
+        android:id="@+id/ui_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:background="#00FFFF00"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"></FrameLayout>
+</RelativeLayout>
