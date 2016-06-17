@@ -8,6 +8,8 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.util.Log;
 
+import com.moonstub.numbernine.R;
+
 import java.util.HashMap;
 
 /**
@@ -16,7 +18,7 @@ import java.util.HashMap;
 public class GameScreen {
 
     int test = 255;
-    int step = -1;
+    int step = -5;
 
     GameActivity game;
     //HashMap<String, GameFragment> gameUiFragments;
@@ -29,9 +31,14 @@ public class GameScreen {
         setDimensions();
         gameRenderer = new GameRenderer(game, this);
         gameRenderer.start();
+
+        getGame().getSupportFragmentManager().beginTransaction().add(R.id.main_render, new MainGameScene(), "GAME_BOARD").commit();
         //addFragment(new GameFragment(), "menu_main");
         //addFragment(new GameFragment(), "menu_options");
         //addFragment(new GameFragment(), "menu_score");
+
+        //Testing
+        getGameRenderer().addBitmap("TEST_MAP", getDimensions(), true);
     }
 
     public void setDimensions(){
@@ -64,15 +71,15 @@ public class GameScreen {
 
     public void draw(){
         Paint p = new Paint();
-        p.setAlpha(25);
-        Bitmap b = getGameRenderer().getBitmapBackground();
+        //p.setAlpha(25);
+        Bitmap b = getGameRenderer().getBitmapByTag("GAME_BACKGROUND");//.getBitmapBackground();
         Canvas bc = new Canvas(b);
         bc.drawARGB(255,0,0,0);
         p.setStyle(Paint.Style.FILL);
         p.setColor(Color.WHITE);
-        bc.drawRect(0,0,500,500,p);
+        bc.drawRect(250,250,750,750,p);
 
-        Bitmap f = getGameRenderer().getBitmapForeground();
+        Bitmap f = getGameRenderer().getBitmapByTag("GAME_FOREGROUND");//.getBitmapForeground();
         Canvas fc = new Canvas(f);
         fc.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
@@ -82,6 +89,10 @@ public class GameScreen {
         if(test < 1 || test > 254) {
             step = step * -1;
         }
+
+        Bitmap t = getGameRenderer().getBitmapByTag("TEST_MAP");
+        Canvas tc = new Canvas(t);
+        tc.drawRect(0,0,500,500,p);
     }
     public void update(){}
 

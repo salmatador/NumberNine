@@ -14,13 +14,15 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_game);
 
         gameScreen = new GameScreen(this);
 
-        setContentView(gameScreen.getGameRenderer());
+        //setContentView(gameScreen.getGameRenderer());
 
-        gameScreen.getGameRenderer().start();
+       // gameScreen.getGameRenderer().start();
+
+
     }
 
     @Override
