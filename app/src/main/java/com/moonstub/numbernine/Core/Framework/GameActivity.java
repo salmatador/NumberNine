@@ -14,18 +14,14 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_game);
 
         gameScreen = new GameScreen(this);
 
-        setContentView(gameScreen.getGameRenderer());
-
-        gameScreen.getGameRenderer().start();
     }
 
     @Override
     protected void onPause() {
-        //getGameScreen().getUiRenderer().stop();
         getGameScreen().getGameRenderer().stop();
         super.onPause();
 
@@ -33,7 +29,6 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        //getGameScreen().getUiRenderer().start();
         getGameScreen().getGameRenderer().start();
         super.onResume();
     }

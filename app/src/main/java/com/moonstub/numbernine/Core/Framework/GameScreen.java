@@ -1,12 +1,9 @@
 package com.moonstub.numbernine.Core.Framework;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
-import android.util.Log;
+
+import com.moonstub.numbernine.Core.GameScenes.LoadingScene;
+import com.moonstub.numbernine.R;
 
 import java.util.HashMap;
 
@@ -15,23 +12,53 @@ import java.util.HashMap;
  */
 public class GameScreen {
 
-    int test = 255;
-    int step = -1;
-
     GameActivity game;
-    //HashMap<String, GameFragment> gameUiFragments;
     GameRenderer gameRenderer;
-    //GameBoard gameBoard;
-    Point screenDimension = new Point();
 
-    public GameScreen(GameActivity gameActivity){
+    Point screenDimension = new Point();
+    String mCurrentSceneTag = null;
+
+    HashMap<String, GameScene> gameScene;
+
+    GameScene mCurrentScene;
+
+    //HashMap<String, GameFragment> gameUiFragments;
+    //TODO Clean Up Code
+    //TODO Second Scene
+
+    public GameScreen(GameActivity gameActivity) {
+        //Screen setup
         game = gameActivity;
         setDimensions();
         gameRenderer = new GameRenderer(game, this);
-        gameRenderer.start();
+
+
+        //Scene setup
+        addScene(new LoadingScene(this, "LOADING_SCENE"));
+        setCurrentSceneTag("LOADING_SCENE");
+        setCurrentScene("LOADING_SCENE");
+
+        initRenderScreen();
+
+        //Fragment Setup
         //addFragment(new GameFragment(), "menu_main");
         //addFragment(new GameFragment(), "menu_options");
         //addFragment(new GameFragment(), "menu_score");
+
+        //gameRenderer.start();
+    }
+
+    private void initRenderScreen(){
+        getGame().getSupportFragmentManager().beginTransaction()
+                .add(R.id.renderable_id,new RendererFragment(),"RENDER_FRAGMENT").commit();
+    }
+
+    private void addScene(GameScene scene) {
+        if(gameScene == null){
+            gameScene = new HashMap<>();
+        }
+
+        gameScene.put(scene.getTag(),scene);
     }
 
     public void setDimensions(){
@@ -52,38 +79,17 @@ public class GameScreen {
         }
     }
 
-//    public boolean addFragment(GameFragment gameFragment, String tag){
-//        // make sure gameUiFragments has be instantiated
-//        if(gameUiFragments == null){
-//            gameUiFragments = new HashMap<>();
-//        }
-//        //TODO check if fragment exists before adding
-//        gameUiFragments.put(tag, gameFragment);
-//        return true;
-//    }
-
     public void draw(){
-        Paint p = new Paint();
-        p.setAlpha(25);
-        Bitmap b = getGameRenderer().getBitmapBackground();
-        Canvas bc = new Canvas(b);
-        bc.drawARGB(255,0,0,0);
-        p.setStyle(Paint.Style.FILL);
-        p.setColor(Color.WHITE);
-        bc.drawRect(0,0,500,500,p);
-
-        Bitmap f = getGameRenderer().getBitmapForeground();
-        Canvas fc = new Canvas(f);
-        fc.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-
-        fc.drawARGB(test,0,0,255);
-
-        test = test + step;
-        if(test < 1 || test > 254) {
-            step = step * -1;
+        if(gameScene != null && getCurrentSceneTag() != null) {
+            gameScene.get(mCurrentSceneTag).draw();
         }
     }
-    public void update(){}
+
+    public void update(){
+        if(gameScene != null && getCurrentSceneTag() != null) {
+            gameScene.get(mCurrentSceneTag).update();
+        }
+    }
 
     public GameActivity getGame() {
         return game;
@@ -95,5 +101,21 @@ public class GameScreen {
 
     public GameRenderer getGameRenderer() {
         return gameRenderer;
+    }
+
+    public String getCurrentSceneTag() {
+        return mCurrentSceneTag;
+    }
+
+    public void setCurrentSceneTag(String currentSceneTag) {
+        this.mCurrentSceneTag = currentSceneTag;
+    }
+
+
+    public GameScene getCurrentScene(){
+        return mCurrentScene;
+    }
+    public void setCurrentScene(String currentScene) {
+        mCurrentScene = gameScene.get(currentScene);
     }
 }
