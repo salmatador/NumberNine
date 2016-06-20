@@ -1,4 +1,4 @@
-package com.moonstub.numbernine.Core.GameScenes.Menus;
+package com.moonstub.numbernine.Core.Framework;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

@@ -45,6 +45,10 @@ public class GameRenderer extends SurfaceView implements Runnable {
         Log.d("Called","Start");
     }
 
+//    public void pause(){
+//        isRunning = false;
+//    }
+
     public void stop(){
         isRunning = false;
         try {

@@ -31,6 +31,7 @@ public class LevelPickerScene extends GameScene {
     public void init() {
         attachFragment(getFragmentByTag(TAGS[0]));
     }
+
     @Override
     public void drawForeground() {
         Canvas c = new Canvas(getForeground());
@@ -39,6 +40,7 @@ public class LevelPickerScene extends GameScene {
         p.setStyle(Paint.Style.FILL);
         c.drawRect(450,450,550,550,p);
     }
+
     @Override
     public void drawBackground() {
         Canvas c = new Canvas(getBackground());

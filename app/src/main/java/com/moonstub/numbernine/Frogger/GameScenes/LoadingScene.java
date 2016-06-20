@@ -1,18 +1,12 @@
-package com.moonstub.numbernine.Core.GameScenes;
+package com.moonstub.numbernine.Frogger.GameScenes;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 
 import com.moonstub.numbernine.Core.Framework.GameScene;
 import com.moonstub.numbernine.Core.Framework.GameScreen;
-import com.moonstub.numbernine.Core.Framework.Tags;
-import com.moonstub.numbernine.Core.GameScenes.Menus.MenuSceneFragment;
-import com.moonstub.numbernine.Core.GameScenes.Menus.MenuSceneSubFragment;
-import com.moonstub.numbernine.R;
+import com.moonstub.numbernine.Frogger.GameScenes.Menus.MenuSceneFragment;
 
 /**
  * Created by desktop on 6/19/2016.
@@ -24,23 +18,14 @@ import com.moonstub.numbernine.R;
 
 public class LoadingScene extends GameScene {
 
-    String[] TAGS = new String[]{"MAIN_MENU","MENU_OPTIONS","NULL"};
-
     public LoadingScene(GameScreen screen, String tag) {
         super(screen, tag);
-
-        //Load Menu Fragments
-        addFragmentToMap(TAGS[0], new MenuSceneFragment());
-        addFragmentToMap(TAGS[1] ,new MenuSceneSubFragment());
-
-        //SET FIRST FRAGMENT OF SCENE
-        setFragment(getFragmentByTag(TAGS[0]), TAGS[0]);
 
     }
 
     @Override
     public void init() {
-        attachFragment(getFragmentByTag(TAGS[0]));
+
     }
 
     @Override
