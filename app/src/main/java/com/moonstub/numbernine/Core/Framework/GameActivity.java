@@ -36,4 +36,10 @@ public class GameActivity extends AppCompatActivity {
     public GameScreen getGameScreen() {
         return gameScreen;
     }
+
+    @Override
+    public void onBackPressed() {
+        if(getGameScreen().switchScene())
+        super.onBackPressed();
+    }
 }

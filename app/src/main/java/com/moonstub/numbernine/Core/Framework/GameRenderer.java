@@ -3,6 +3,7 @@ package com.moonstub.numbernine.Core.Framework;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -73,7 +74,7 @@ public class GameRenderer extends SurfaceView implements Runnable {
 
             Canvas c = mHolder.lockCanvas();
             c.getClipBounds(dst);
-
+            c.drawColor(Color.BLACK);
             for(String tag : drawList ){
                 c.drawBitmap(mBitmapRenderMap.get(tag), null, dst, null);
             }
@@ -103,4 +104,7 @@ public class GameRenderer extends SurfaceView implements Runnable {
         drawList.remove(tag);
     }
 
+    public void resetCanvas() {
+
+    }
 }

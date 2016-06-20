@@ -1,39 +1,50 @@
 package com.moonstub.numbernine.Core.GameScenes.Menus;
 
-import android.content.Context;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
+import android.widget.ImageButton;
 
-import com.moonstub.numbernine.Core.Framework.GameActivity;
-import com.moonstub.numbernine.Core.Framework.GameScreen;
 import com.moonstub.numbernine.R;
 
 /**
  * Created by desktop on 6/17/2016.
  */
-public class MenuSceneFragment extends GameFragment{
-
-    Button button1;
+public class MenuSceneFragment extends GameFragment {
+    String[] TAGS = new String[]{"MAIN_MENU", "MENU_OPTIONS", "MENU_SCORE", "NULL"};
+    Button mOptionsBtn;
+    ImageButton mPlayBtn;
+    Button mScoreBtn;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.menu_main,container,false);
-        button1 = (Button)v.findViewById(R.id.button);
-        button1.setOnClickListener(new View.OnClickListener() {
+        View v = inflater.inflate(R.layout.menu_main, container, false);
+
+        mOptionsBtn = (Button) v.findViewById(R.id.menu_options_btn);
+        mPlayBtn = (ImageButton) v.findViewById(R.id.menu_play_btn);
+        mScoreBtn = (Button) v.findViewById(R.id.menu_score_btn);
+
+        mOptionsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment f = getGameScreen().getCurrentScene().getFragment();
-                getGameScreen().getCurrentScene().remove(f);
+                replaceCurrentMenu(TAGS[1]);
+            }
+        });
+        mPlayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceCurrentMenu(TAGS[3]);
+            }
+        });
+        mScoreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceCurrentMenu(TAGS[2]);
             }
         });
         return v;

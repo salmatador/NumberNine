@@ -1,7 +1,9 @@
 package com.moonstub.numbernine.Core.Framework;
 
 import android.graphics.Point;
+import android.os.Handler;
 
+import com.moonstub.numbernine.Core.GameScenes.LevelPickerScene;
 import com.moonstub.numbernine.Core.GameScenes.LoadingScene;
 import com.moonstub.numbernine.R;
 
@@ -34,9 +36,12 @@ public class GameScreen {
 
 
         //Scene setup
-        addScene(new LoadingScene(this, "LOADING_SCENE"));
-        setCurrentSceneTag("LOADING_SCENE");
-        setCurrentScene("LOADING_SCENE");
+        addScene(new LoadingScene(this, gameActivity.getString(R.string.LOADING_SCENE)));
+        //Second Scene
+        addScene(new LevelPickerScene(this, gameActivity.getString(R.string.LEVEL_PICKER)));
+
+        setCurrentSceneTag(gameActivity.getString(R.string.LOADING_SCENE));
+        setCurrentScene(gameActivity.getString(R.string.LOADING_SCENE));
 
         initRenderScreen();
 
@@ -46,22 +51,23 @@ public class GameScreen {
         //addFragment(new GameFragment(), "menu_score");
 
         //gameRenderer.start();
+        getCurrentScene().init();
     }
 
-    private void initRenderScreen(){
+    private void initRenderScreen() {
         getGame().getSupportFragmentManager().beginTransaction()
-                .add(R.id.renderable_id,new RendererFragment(),"RENDER_FRAGMENT").commit();
+                .add(R.id.renderable_id, new RendererFragment(), "RENDER_FRAGMENT").commit();
     }
 
     private void addScene(GameScene scene) {
-        if(gameScene == null){
+        if (gameScene == null) {
             gameScene = new HashMap<>();
         }
 
-        gameScene.put(scene.getTag(),scene);
+        gameScene.put(scene.getTag(), scene);
     }
 
-    public void setDimensions(){
+    public void setDimensions() {
         getGame().getWindowManager().getDefaultDisplay().getRealSize(screenDimension);
         //Log.d("Screen Size", screenDimension.toString());
     }
@@ -79,14 +85,14 @@ public class GameScreen {
         }
     }
 
-    public void draw(){
-        if(gameScene != null && getCurrentSceneTag() != null) {
+    public void draw() {
+        if (gameScene != null && getCurrentSceneTag() != null) {
             gameScene.get(mCurrentSceneTag).draw();
         }
     }
 
-    public void update(){
-        if(gameScene != null && getCurrentSceneTag() != null) {
+    public void update() {
+        if (gameScene != null && getCurrentSceneTag() != null) {
             gameScene.get(mCurrentSceneTag).update();
         }
     }
@@ -112,10 +118,32 @@ public class GameScreen {
     }
 
 
-    public GameScene getCurrentScene(){
+    public GameScene getCurrentScene() {
         return mCurrentScene;
     }
+
     public void setCurrentScene(String currentScene) {
         mCurrentScene = gameScene.get(currentScene);
+    }
+
+    public boolean switchScene() {
+
+        String s = getCurrentSceneTag();
+        switch (s) {
+            case "LOADING_SCENE":
+                setCurrentScene("LEVEL_PICKER");
+                setCurrentSceneTag("LEVEL_PICKER");
+                getCurrentScene().init();
+
+                getGameRenderer().removeBitmap("LOADING_SCENE_FG");
+                getGameRenderer().removeBitmap("LOADING_SCENE_BG");
+                getGameRenderer().resetCanvas();
+                return false;
+            default:
+                return true;
+        }
+
+//        return false;
+
     }
 }

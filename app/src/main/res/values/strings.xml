@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">NumberNine</string>
+    <string name="options">Options</string>
+    <string name="play_btn_text">Play</string>
+    <string name="score_btn_text">Score</string>
+    <string name="LOADING_SCENE">LOADING_SCENE</string>
+    <string name="LEVEL_PICKER">LEVEL_PICKER</string>
 </resources>
