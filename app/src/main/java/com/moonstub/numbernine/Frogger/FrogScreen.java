@@ -29,25 +29,25 @@ public class FrogScreen extends GameScreen {
         addScene(new LevelPickerScene(this, SCENES.LEVEL_PICKER));
         addScene(new GameLevelScene(this, SCENES.GAME_LEVEL));
 
-        setCurrentSceneAndTag(SCENES.LOADING);
+        setCurrentSceneAndTag(SCENES.SPLASH);
 
     }
 
     @Override
     public boolean sceneNavigation(boolean foreward) {
         switch (getCurrentSceneTag()) {
-            case SCENE.LOADING:
+            case SCENES.SPLASH:
                 if (foreward) {
-                    switchScene(SCENE.MAIN_MENU);
+                    switchScene(SCENES.MAIN_MENU);
                     return false;
                 } else {
                     return true;
                 }
-            case SCENE.MAIN_MENU:
+            case SCENES.MAIN_MENU:
                 return false;
-            case SCENE.LEVEL_PICKER:
+            case SCENES.LEVEL_PICKER:
                 return false;
-            case SCENE.GAME_LEVEL:
+            case SCENES.GAME_LEVEL:
                 return false;
             default:
                 return true;

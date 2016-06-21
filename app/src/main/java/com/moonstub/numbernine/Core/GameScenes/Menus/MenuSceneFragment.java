@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.moonstub.numbernine.Core.Framework.GameFragment;
+import com.moonstub.numbernine.Frogger.GameScenes.SplashScene;
 import com.moonstub.numbernine.R;
 
 /**

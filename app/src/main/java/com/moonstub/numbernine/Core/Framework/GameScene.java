@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +22,9 @@ public abstract class GameScene {
     GameScreen mScreen;
     String mTag;
 
+    Point screenDimensions;
+    GameGraphics mGraphics;
+
     Fragment mFragment;
     Bitmap mBackground;
     Bitmap mForeground;
@@ -36,6 +40,9 @@ public abstract class GameScene {
 
         mFragmentMap = new HashMap<>();
 
+        screenDimensions = getScreen().getDimensions();
+        mGraphics = getScreen().getGraphics();
+
 
     }
     public GameScene(GameScreen screen, String tag) {
@@ -46,6 +53,8 @@ public abstract class GameScene {
 
         mFragmentMap = new HashMap<>();
 
+        screenDimensions = getScreen().getDimensions();
+        mGraphics = getScreen().getGraphics();
 
     }
 
@@ -137,6 +146,18 @@ public abstract class GameScene {
                 remove(getFragment());
 
         }
+    }
+
+    public GameGraphics getGraphics() {
+        return mGraphics;
+    }
+
+    public Point getScreenDimensions() {
+        return screenDimensions;
+    }
+
+    public void setScreenDimensions(Point screenDimensions) {
+        this.screenDimensions = screenDimensions;
     }
 
     public Fragment getFragmentByTag(String tag) {

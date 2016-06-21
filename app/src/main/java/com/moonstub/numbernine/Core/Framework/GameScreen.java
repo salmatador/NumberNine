@@ -24,12 +24,14 @@ public abstract class GameScreen {
     HashMap<String, GameScene> gameScene;
 
     GameScene mCurrentScene;
+    private GameGraphics mGraphics;
 
     //TODO Clean Up Code
 
     public GameScreen(GameActivity gameActivity) {
         //Screen setup
         game = gameActivity;
+        mGraphics = game.getGameGraphics();
         setDimensions();
         gameRenderer = new GameRenderer(game, this);
 
@@ -63,6 +65,10 @@ public abstract class GameScreen {
 
     public void setDimensions() {
         getGame().getWindowManager().getDefaultDisplay().getRealSize(screenDimension);
+    }
+
+    public Point getScreenDimension() {
+        return screenDimension;
     }
 
     public void draw() {
@@ -147,4 +153,7 @@ public abstract class GameScreen {
 //        }
     }
 
+    public GameGraphics getGraphics() {
+        return mGraphics;
+    }
 }

@@ -10,6 +10,7 @@ public class GameActivity extends AppCompatActivity {
 
     //Declare Classes
 
+    GameGraphics gameGraphics;// = new GameGraphics(this);
     GameScreen gameScreen;
     GameSound gameSound;
     GameIO gameIO;
@@ -20,7 +21,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
+        gameGraphics = new GameGraphics(this);
         gameScreen = new FrogScreen(this);
         gameIO = new GameIO(this);
         gameInput = new GameInput(this);
@@ -42,6 +43,10 @@ public class GameActivity extends AppCompatActivity {
 
     public GameScreen getGameScreen() {
         return gameScreen;
+    }
+
+    public GameGraphics getGameGraphics(){
+        return gameGraphics;
     }
 
     @Override
