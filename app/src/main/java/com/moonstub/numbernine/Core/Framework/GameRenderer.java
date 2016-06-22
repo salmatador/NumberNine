@@ -3,7 +3,7 @@ package com.moonstub.numbernine.Core.Framework;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -18,12 +18,11 @@ import java.util.HashMap;
 public class GameRenderer extends SurfaceView implements Runnable {
 
     GameScreen currentScreen;
+    Bitmap background;
+    Bitmap foreground;
+    HashMap<String, Bitmap> renderableBitmaps;
+    ArrayList<String> drawList = new ArrayList<>();
 
-
-    HashMap<String, Bitmap> mBitmapRenderMap;
-    ArrayList<String> drawList;
-    //Bitmap background;
-    //Bitmap foreground;
 
     SurfaceHolder mHolder;
     Thread mThread;
@@ -32,9 +31,16 @@ public class GameRenderer extends SurfaceView implements Runnable {
     public GameRenderer(GameActivity gameActivity, GameScreen gameScreen) {
         super(gameActivity);
         currentScreen = gameScreen;
+        renderableBitmaps = new HashMap<>();
+        renderableBitmaps.put("GAME_BACKGROUND", GameGraphics.createBitmap(currentScreen.getDimensions()));
+        renderableBitmaps.put("GAME_FOREGROUND", GameGraphics.createBitmap(currentScreen.getDimensions()));
 
-        mBitmapRenderMap = new HashMap<>();
-        drawList = new ArrayList<>();
+        drawList.add("GAME_BACKGROUND");
+        drawList.add("GAME_FOREGROUND");
+
+        //background = GameGraphics.createBitmap(currentScreen.getDimensions());
+        //foreground = GameGraphics.createBitmap(currentScreen.getDimensions());
+
         mHolder = getHolder();
     }
 
@@ -42,12 +48,7 @@ public class GameRenderer extends SurfaceView implements Runnable {
         isRunning = true;
         mThread = new Thread(this);
         mThread.start();
-        Log.d("Called","Start");
     }
-
-//    public void pause(){
-//        isRunning = false;
-//    }
 
     public void stop(){
         isRunning = false;
@@ -58,12 +59,28 @@ public class GameRenderer extends SurfaceView implements Runnable {
         }
     }
 
+    public void addBitmap(String tag, Point dimension, boolean addToDrawList){
+        renderableBitmaps.put(tag, GameGraphics.createBitmap(dimension));
+        if(addToDrawList){
+            addToDrawList(tag);
+        }
+    }
+
+    private void addToDrawList(String tag) {
+        drawList.add(tag);
+    }
+
+    public void removeTagFromDrawList(String tag){
+        drawList.remove(tag);
+    }
+
     @Override
     public void run() {
 
         Rect dst = new Rect();
         Thread currentThread = Thread.currentThread();
         //Setup Timer
+
         while (isRunning && mThread == currentThread) {
             if (!mHolder.getSurface().isValid()) {
                 continue;
@@ -75,14 +92,15 @@ public class GameRenderer extends SurfaceView implements Runnable {
             getCurrentScreen().draw();
 
 
-
             Canvas c = mHolder.lockCanvas();
             c.getClipBounds(dst);
-            c.drawColor(Color.BLACK);
-            for(String tag : drawList ){
-                c.drawBitmap(mBitmapRenderMap.get(tag), null, dst, null);
+            //Log.d("Test","123");
+            for (String tag : drawList){
+                c.drawBitmap(renderableBitmaps.get(tag),null,dst,null);
+                Log.d("Drawing", "Current Bitmap " + tag);
             }
-
+            //c.drawBitmap(background, null, dst, null);
+            //c.drawBitmap(foreground,null,dst,null);
             mHolder.unlockCanvasAndPost(c);
 
         }
@@ -92,23 +110,15 @@ public class GameRenderer extends SurfaceView implements Runnable {
         return currentScreen;
     }
 
-    public Bitmap addBitmapToRender(String tag, boolean addToDrawList){
-        if(mBitmapRenderMap == null){
-            mBitmapRenderMap = new HashMap<>();
-        }
-        mBitmapRenderMap.put(tag, GameGraphics.createBitmap(getCurrentScreen().getDimensions()));
-        if(addToDrawList){
-            drawList.add(tag);
-        }
-        return mBitmapRenderMap.get(tag);
+    public Bitmap getBitmapByTag(String tag){
+        return renderableBitmaps.get(tag);
     }
 
-    public void removeBitmap(String tag){
-        mBitmapRenderMap.remove(tag);
-        drawList.remove(tag);
+    public Bitmap getBitmapBackground() {
+        return background;
     }
 
-    public void resetCanvas() {
-
+    public Bitmap getBitmapForeground() {
+        return foreground;
     }
 }
