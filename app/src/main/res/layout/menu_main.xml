@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#00000000">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/options"
+        android:id="@+id/menu_options_btn"
+        android:layout_gravity="bottom"/>
+
+    <ImageButton
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/play_btn_text"
+        android:id="@+id/menu_play_btn"
+        android:layout_gravity="bottom"
+        android:layout_weight="2"
+        android:src="@mipmap/youtube_play_btn"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/score_btn_text"
+        android:id="@+id/menu_score_btn"
+        android:layout_gravity="bottom"/>
+</LinearLayout>
