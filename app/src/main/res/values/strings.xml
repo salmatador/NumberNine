@@ -7,4 +7,6 @@
     <string name="LEVEL_PICKER">LEVEL_PICKER</string>
     <string name="MAIN_MENU">MAIN_MENU</string>
     <string name="GAME_LEVEL">GAME_LEVEL</string>
+    <string name="title_scene_play_btn_txt">Play</string>
+    <string name="title_scene_options_btn_txt">Options</string>
 </resources>

@@ -1,35 +1,37 @@
-package com.moonstub.numbernine.Core.GameScenes;
+package com.moonstub.numbernine.Frogger.GameScenes;
 
+import android.app.DialogFragment;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.moonstub.numbernine.Core.Framework.GameScene;
 import com.moonstub.numbernine.Core.Framework.GameScreen;
-import com.moonstub.numbernine.Core.GameScenes.Menus.LevelSceneFragment;
-import com.moonstub.numbernine.Core.GameScenes.Menus.MenuSceneFragment;
-import com.moonstub.numbernine.Core.GameScenes.Menus.MenuSceneSubFragment;
+import com.moonstub.numbernine.Frogger.GameScenes.Menus.LevelSceneFragment;
+import com.moonstub.numbernine.Frogger.Constants.SCENES;
 
 /**
  * Created by desktop on 6/19/2016.
  */
 public class LevelPickerScene extends GameScene {
 
-    String[] TAGS = new String[]{"LEVEL_PICKER","NULL"};
+
+    private DialogFragment mDialogFragment;
+
     public LevelPickerScene(GameScreen screen, String tag) {
         super(screen, tag);
 
         //Load Menu Fragments
-        addFragmentToMap(TAGS[0], new LevelSceneFragment());
+        addFragmentToMap(SCENES.LEVEL_PICKER_MAIN, new LevelSceneFragment());
 
         //SET FIRST FRAGMENT OF SCENE
-        setFragment(getFragmentByTag(TAGS[0]), TAGS[0]);
+        setCurrentFragment(SCENES.LEVEL_PICKER_MAIN);
 
     }
 
     @Override
     public void init() {
-        attachFragment(getFragmentByTag(TAGS[0]));
+        attachFragment(getFragment());
     }
 
     @Override
@@ -50,5 +52,21 @@ public class LevelPickerScene extends GameScene {
         c.drawText("Loading...",50,50,p);
     }
 
+    @Override
+    public boolean onBackPressed() {
+        if (getDialogFragment() == null) {
+            return super.onBackPressed();
+        } else {
+            attachDialogFragment(getDialogFragment());
+        }
+        return true;
+    }
 
+    private void attachDialogFragment(DialogFragment dialogFragment) {
+        //Dialog popup for backpress
+    }
+
+    public DialogFragment getDialogFragment() {
+        return mDialogFragment;
+    }
 }

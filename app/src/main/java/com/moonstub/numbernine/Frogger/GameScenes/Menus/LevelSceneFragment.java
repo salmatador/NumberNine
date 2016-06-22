@@ -1,4 +1,4 @@
-package com.moonstub.numbernine.Core.GameScenes.Menus;
+package com.moonstub.numbernine.Frogger.GameScenes.Menus;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

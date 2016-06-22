@@ -105,9 +105,16 @@ public abstract class GameScene {
         return mFragment;
     }
 
+    public void setCurrentFragment(String tag){
+        mFragmentTag = tag;
+        if(getFragment() != null){
+            remove(getFragment());
+        }
+        mFragment = getFragmentByTag(tag);
+    }
     public void setFragment(Fragment fragment, String tag) {
-        if(fragment != null){
-            remove(fragment);
+        if(getFragment() != null){
+            remove(getFragment());
         }
         mFragmentTag = tag;
         mFragment = fragment;
@@ -180,6 +187,10 @@ public abstract class GameScene {
 //    }
 
     public abstract void drawBackground();
+
+    public boolean onBackPressed() {
+        return getScreen().sceneNavigation(false);
+    }
 //    {
 //        Canvas c = new Canvas(getBackground());
 //        Paint p = new Paint();

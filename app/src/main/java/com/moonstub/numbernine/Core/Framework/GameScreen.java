@@ -2,10 +2,6 @@ package com.moonstub.numbernine.Core.Framework;
 
 import android.graphics.Point;
 
-import com.moonstub.numbernine.Core.GameScenes.GameLevelScene;
-import com.moonstub.numbernine.Core.GameScenes.LevelPickerScene;
-import com.moonstub.numbernine.Core.GameScenes.LoadingScene;
-import com.moonstub.numbernine.Core.GameScenes.MainMenuScene;
 import com.moonstub.numbernine.R;
 
 import java.util.HashMap;
@@ -115,6 +111,9 @@ public abstract class GameScreen {
     public void switchScene(String tag){
         if(tag != null) {
             String s = getCurrentSceneTag();
+            if(getCurrentScene().getFragment() != null) {
+                getCurrentScene().remove(getCurrentScene().getFragment());
+            }
             gameRenderer.stop();
             setCurrentScene(tag);
             setCurrentSceneTag(tag);
@@ -133,24 +132,7 @@ public abstract class GameScreen {
 
     //Redo this without hardCoded Strings
     public boolean onBackPressed() {
-        return sceneNavigation(false);
-//        switch (getCurrentSceneTag()){
-//
-//            case "LOADING_SCENE":
-//                switchScene("MAIN_MENU");
-//                return false;
-//            case "MAIN_MENU":
-//                switchScene("LEVEL_PICKER");
-//                return false;
-//            case "LEVEL_PICKER":
-//                switchScene("GAME_LEVEL");
-//                return false;
-//            case "GAME_LEVEL":
-//                switchScene("MAIN_MENU");
-//                return false;
-//            default:
-//             return true;
-//        }
+        return getCurrentScene().onBackPressed();
     }
 
     public GameGraphics getGraphics() {
